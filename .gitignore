@@ -1,0 +1,58 @@
+# Maven build
+target/
+*/target/
+!.mvn/wrapper/maven-wrapper.jar
+
+# Gradle build (if any submodules use it)
+build/
+*/build/
+
+# Logs
+*.log
+logs/
+
+# OS junk files
+.DS_Store
+Thumbs.db
+
+# IDE files
+### IntelliJ IDEA ###
+.idea/
+*.iws
+*.iml
+*.ipr
+
+### Eclipse/STS ###
+.classpath
+.project
+.settings/
+.springBeans
+.sts4-cache
+.apt_generated
+.factorypath
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+### VS Code ###
+.vscode/
+
+# Environment/config files
+.env
+application-*.yml
+application-*.properties
+
+# Test reports and coverage
+surefire-reports/
+jacoco.exec
+coverage/
+test-output/
+
+# Docker / runtime artifacts
+*.pid
+*.seed
+*.db
