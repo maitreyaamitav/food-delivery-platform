@@ -1,0 +1,38 @@
+package org.fooddelivery.orderservice.order.persistent.domain;
+
+import java.math.BigDecimal;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Entity
+@Table(name = "order_items", schema = "food_delivery")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class OrderItem {
+
+	@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long orderItemId;
+
+    private Long menuItemId;
+    private String name;
+    private BigDecimal price;
+
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    private Order order;
+}

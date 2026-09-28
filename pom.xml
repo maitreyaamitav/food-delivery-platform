@@ -12,6 +12,7 @@
     <modules>
         <module>user-service</module>
         <module>restaurant-service</module>
+        <module>order-service</module>
     </modules>
 
     <properties>
@@ -19,6 +20,7 @@
         <spring.boot.version>3.2.5</spring.boot.version>
         <mapstruct.version>1.5.5.Final</mapstruct.version>
         <testcontainers.version>1.19.3</testcontainers.version>
+        <flyway.version>9.22.0</flyway.version>
     </properties>
 
     <!-- Centralized dependency versions -->
@@ -40,12 +42,27 @@
                 <version>${mapstruct.version}</version>
             </dependency>
 
-            <!-- Testcontainers -->
+            <!-- Testcontainers BOM (manages all Testcontainers modules) -->
             <dependency>
                 <groupId>org.testcontainers</groupId>
-                <artifactId>postgresql</artifactId>
+                <artifactId>testcontainers-bom</artifactId>
                 <version>${testcontainers.version}</version>
-                <scope>test</scope>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- Flyway -->
+            <dependency>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-core</artifactId>
+                <version>${flyway.version}</version>
+            </dependency>
+
+            <!-- PostgreSQL JDBC -->
+            <dependency>
+                <groupId>org.postgresql</groupId>
+                <artifactId>postgresql</artifactId>
+                <version>42.7.3</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -68,6 +85,35 @@
                     <configuration>
                         <release>${java.version}</release>
                     </configuration>
+                </plugin>
+
+                <!-- Flyway Maven Plugin -->
+                <plugin>
+                    <groupId>org.flywaydb</groupId>
+                    <artifactId>flyway-maven-plugin</artifactId>
+                    <version>${flyway.version}</version>
+                    <configuration>
+                        <url>jdbc:postgresql://localhost:5432/postgres</url>
+                        <user>postgres</user>
+                        <password>postgres</password>
+                        <schemas>
+                            <schema>food_delivery</schema>
+                        </schemas>
+                        <!-- Centralized migration folder -->
+                        <locations>
+                            <location>filesystem:${project.basedir}/db/migration</location>
+                        </locations>
+                        <baselineOnMigrate>true</baselineOnMigrate>
+                        <baselineVersion>0</baselineVersion>
+                    </configuration>
+                    <dependencies>
+                        <!-- Attach JDBC driver to the plugin -->
+                        <dependency>
+                            <groupId>org.postgresql</groupId>
+                            <artifactId>postgresql</artifactId>
+                            <version>42.7.3</version>
+                        </dependency>
+                    </dependencies>
                 </plugin>
             </plugins>
         </pluginManagement>
